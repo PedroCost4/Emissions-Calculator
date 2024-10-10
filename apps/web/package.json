@@ -1,0 +1,40 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@repo/ui": "workspace:*",
+    "@t3-oss/env-nextjs": "^0.11.1",
+    "@tanstack/react-query": "^5.59.8",
+    "lucide-react": "^0.395.0",
+    "next": "14.2.8",
+    "public-google-sheets-parser": "^1.5.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.53.0",
+    "react-hot-toast": "^2.4.1",
+    "react-spinners": "^0.14.1",
+    "recharts": "^2.12.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "14.2.8",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/eslint": "^8",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10",
+    "eslint": "^8",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.10",
+    "typescript": "^5"
+  }
+}
