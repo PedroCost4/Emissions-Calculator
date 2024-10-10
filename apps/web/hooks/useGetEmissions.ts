@@ -7,7 +7,7 @@ export function useGetEmissions({skip, take}: UseGetEmissionProps) {
   return useQuery({
     queryKey: ["get-emissions"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:3000/mobile-emission/many", {
+      const res = await fetch(`${process.env.API_URL}/mobile-emission/many`, {
         method: "get",
         headers: {
           "Content-Type": "application/json",

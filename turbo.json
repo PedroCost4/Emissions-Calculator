@@ -23,5 +23,11 @@
     "db:studio": {
       "dependsOn": ["^db:studio"]
     }
-  }
+  },
+  "globalDependencies": [
+    ".env",
+    ".env.local",
+    "tsconfig.json" 
+  ],
+  "globalEnv": ["API_URL", "DATABASE_URL"]
 }
