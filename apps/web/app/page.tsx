@@ -59,8 +59,9 @@ export default function Page() {
     <main className="h-full w-full">
       <Layout
         bottomBar={noMobileEmissions ? undefined : <BottomBar />}
-        className="flex flex-col justify-center items-center w-full h-full border-y px-8 py-4"
       >
+        <div className="flex flex-col justify-center items-center w-full h-full border-y px-8 py-4">
+
         <div className="flex flex-col w-full">
           <span>Ano de referência: {new Date().getFullYear()}</span>
           <span className="font-bold text-2xl">Combustão móvel</span>
@@ -72,6 +73,7 @@ export default function Page() {
           open={createDialog}
           onOpenChange={setCreateDialog}
         />
+        </div>
       </Layout>
     </main>
   );
