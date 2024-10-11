@@ -1,14 +1,17 @@
 services:
   db:
+    container_name: db
     image: postgres
     environment:
+      POSTGRES_USER: postgres 
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: zaya
-      POSTGRES_HOST_AUTH_METHOD: trust
+    networks:
+      - app_network
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
   web:
     container_name: web
     build:
@@ -22,8 +25,7 @@ services:
     networks:
       - app_network
     environment:
-      API_URL: http://localhost:3000
-
+      API_URL: http://server:3000
   server:
     container_name: server
     build:
@@ -37,11 +39,8 @@ services:
     networks:
       - app_network
     environment:
-      DATABASE_URL: postgresql://postgres@db:5432/zaya
-
+      DATABASE_URL: postgresql://postgres:password@db:5432/zaya
 volumes:
   postgres_data: 
-
 networks:
   app_network:
-    external: true

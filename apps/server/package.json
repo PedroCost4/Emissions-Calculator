@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsup ./src/**/*.ts ",
-    "start": "node -r esbuild-register ./dist/index.js",
+    "build": "tsup ./src/**.ts ./src/**/*.ts ",
+    "start": "node -r esbuild-register ./dist/server.js",
     "lint": "eslint . --max-warnings 0",
     "db:generate": "pnpm drizzle-kit generate",
     "db:migrate": "pnpm drizzle-kit migrate",
+    "db:migrate:prod": "NODE_ENV=production node -r ./dist/db/migrate.js",
     "db:studio": "pnpm drizzle-kit studio"
   },
   "dependencies": {

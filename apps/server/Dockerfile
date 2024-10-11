@@ -1,7 +1,8 @@
-FROM node:20-slim AS base
+FROM node:18-slim  AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 FROM base AS builder
 WORKDIR /app
@@ -13,7 +14,7 @@ FROM base AS installer
 WORKDIR /app
 
 COPY --from=builder /app/out/json/ .
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --force
+RUN pnpm install --frozen-lockfile
 
 COPY --from=builder /app/out/full/ .
 
@@ -21,10 +22,14 @@ RUN pnpm turbo build --filter=server...
 
 FROM base AS runner
 WORKDIR /app
-
-RUN addgroup --system --gid 1001 honojs
-RUN adduser --system --uid 1001 honojs
-USER honojs
 COPY --from=installer /app .
 
-CMD node apps/server/dist/index.js
+USER root
+
+# RUN pnpm db:migrate --filter=server
+
+EXPOSE 3000
+
+ENV HOSTNAME="0.0.0.0"
+
+CMD node apps/server/dist/server.js
