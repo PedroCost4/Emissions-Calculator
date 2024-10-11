@@ -26,10 +26,12 @@ COPY --from=installer /app .
 
 USER root
 
-# RUN pnpm db:migrate --filter=server
+# ENV DATABASE_URL postgresql://postgres:password@db:5432/zaya
 
 EXPOSE 3000
 
 ENV HOSTNAME="0.0.0.0"
 
-CMD node apps/server/dist/server.js
+RUN chmod -R 777 apps/server/docker.sh
+
+CMD sh apps/server/docker.sh
