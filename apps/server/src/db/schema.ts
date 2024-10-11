@@ -14,7 +14,7 @@ export const mobileEmissions = pgTable("mobile_emissions", {
   id: uuid().primaryKey().$default(() => sql`uuid_generate_v4()`),
   source: text().notNull(),
   fuel_type: text().notNull(),
-  quantity: numeric({scale: 2}).notNull(),
+  quantity: numeric().notNull(),
   quantity_unit: text().notNull(),
   mode: modeEnum().notNull(),
   created_at: date().notNull().defaultNow(),
