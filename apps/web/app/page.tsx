@@ -40,6 +40,7 @@ import {
   DialogTitle,
 } from "@repo/ui/components/ui/dialog";
 import { useDeleteEmission } from "~/hooks/useDeleteEmission";
+import { cn } from "@repo/ui/lib/utils";
 
 export default function Page() {
   const [createDialog, setCreateDialog] = useState(false);
@@ -59,9 +60,9 @@ export default function Page() {
     <main className="h-full w-full">
       <Layout
         bottomBar={noMobileEmissions ? undefined : <BottomBar />}
+        className={cn("w-full", noMobileEmissions ? "h-full" : "")}
       >
         <div className="flex flex-col justify-center items-center w-full h-full border-y px-8 py-4">
-
         <div className="flex flex-col w-full">
           <span>Ano de referência: {new Date().getFullYear()}</span>
           <span className="font-bold text-2xl">Combustão móvel</span>

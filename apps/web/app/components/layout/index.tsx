@@ -81,12 +81,12 @@ export function Layout({
           <ChevronUp size={24} />
         </div>
       </div>
-      <div className="h-full w-full flex flex-col relative">
+      <div className="h-full w-full flex flex-col">
         {!removeTopBar && <div className="min-h-11 w-full">{topBar}</div>}
         <div className={className}>
           {children}
         </div>
-        {!removeBottomBar && <div className="min-h-[80px] ">{bottomBar}</div>}
+        {!removeBottomBar && <div className="min-h-20 ">{bottomBar}</div>}
       </div>
     </div>
   );
