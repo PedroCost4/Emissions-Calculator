@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e ../../.env -c pnpm tsx watch src/server.ts",
-    "build": "dotenv -e ../../.env -c tsup src",
-    "start": "dotenv -e ../../.env -c node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsup ./src/**/*.ts ",
+    "start": "node -r esbuild-register ./dist/index.js",
     "lint": "eslint . --max-warnings 0",
-    "seed": "dotenv -e ../../.env -c tsx ./src/seed.ts",
-    "db:generate": "dotenv -e ../../.env -c pnpm drizzle-kit generate",
-    "db:migrate": "dotenv -e ../../.env -c pnpm drizzle-kit migrate",
-    "db:studio": "dotenv -e ../../.env -c pnpm drizzle-kit studio"
+    "db:generate": "pnpm drizzle-kit generate",
+    "db:migrate": "pnpm drizzle-kit migrate",
+    "db:studio": "pnpm drizzle-kit studio"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.1",
@@ -25,8 +24,6 @@
     "pg": "^8.13.0",
     "postgres": "^3.4.4",
     "public-google-sheets-parser": "^1.5.4",
-    "tsup": "^8.3.0",
-    "tsx": "^4.19.1",
     "uuid": "^10.0.0",
     "zod": "^3.23.8"
   },
@@ -37,6 +34,8 @@
     "@types/node": "^20",
     "eslint": "^8",
     "postcss": "^8",
+    "tsup": "^8.3.0",
+    "tsx": "^4.19.1",
     "typescript": "^5"
   }
 }

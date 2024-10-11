@@ -29,5 +29,5 @@
     ".env.local",
     "tsconfig.json" 
   ],
-  "globalEnv": ["API_URL", "DATABASE_URL"]
+  "globalEnv": ["NEXT_PUBLIC_API_URL", "DATABASE_URL", "NODE_ENV"]
 }

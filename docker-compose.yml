@@ -1,39 +1,47 @@
 services:
-  app:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: zaya
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    container_name: web
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./apps/web/Dockerfile
+    restart: always
+    depends_on:
+      - server
     ports:
-      - '3000:3000' # Maps Next.js app to localhost:3000
-      - '5000:5000' # Maps your custom server to localhost:5000
+      - 3001:3001
+    networks:
+      - app_network
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydatabase
-      POSTGRES_HOST: db
+      API_URL: http://localhost:3000
+
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: ./apps/server/Dockerfile
+    restart: always
     depends_on:
       - db
-    volumes:
-      - .:/app
-    networks:
-      - app-network
-
-  db:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydatabase
     ports:
-      - '5432:5432' 
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - 3000:3000
     networks:
-      - app-network
+      - app_network
+    environment:
+      DATABASE_URL: postgresql://postgres@db:5432/zaya
 
 volumes:
-  postgres-data:
+  postgres_data: 
 
 networks:
-  app-network:
-    driver: bridge
+  app_network:
+    external: true

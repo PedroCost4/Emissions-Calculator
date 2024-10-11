@@ -59,12 +59,6 @@ importers:
       public-google-sheets-parser:
         specifier: ^1.5.4
         version: 1.5.4
-      tsup:
-        specifier: ^8.3.0
-        version: 8.3.0(jiti@1.21.0)(postcss@8.4.38)(tsx@4.19.1)(typescript@5.5.4)
-      tsx:
-        specifier: ^4.19.1
-        version: 4.19.1
       uuid:
         specifier: ^10.0.0
         version: 10.0.0
@@ -90,6 +84,12 @@ importers:
       postcss:
         specifier: ^8
         version: 8.4.38
+      tsup:
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.0)(postcss@8.4.38)(tsx@4.19.1)(typescript@5.5.4)
+      tsx:
+        specifier: ^4.19.1
+        version: 4.19.1
       typescript:
         specifier: ^5
         version: 5.5.4
