@@ -1,5 +1,5 @@
 import PublicGoogleSheetsParser from "public-google-sheets-parser";
-import type { FuelTypeSheet, GWP } from "../../../web/schema/mobileEmissionSchema";
+import type { FuelTypeSheet, GWP } from "../schema/sheetsInfo";
 
 const spreadsheetId = "1HRMglGyAjlrp4axVZtU3RqJds2r5ASViwVc0xjCUJrE";
 

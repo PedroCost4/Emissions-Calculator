@@ -12,15 +12,17 @@ import {
 } from "@repo/ui/components/ui/table";
 import { useQueryClient } from "@tanstack/react-query";
 import { Send, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { BarLoader } from "react-spinners";
 import { useCreateEmission } from "~/hooks/useCreateEmission";
 import { useGetEmissions } from "~/hooks/useGetEmissions";
+import { usePagination } from "~/hooks/usePagination";
 import type {
   MobileEmissionCreateSchema,
-  MobileEmissionWithCO2,
+  MobileEmissionsReponse
 } from "~/schema/mobileEmissionSchema";
 import {
   CREATE_MOBILE_EMISSION_DEFAULT_VALUE,
@@ -28,19 +30,18 @@ import {
 } from "./components/create-mobile-emission-dialog";
 import { CreateMobileEmissionForm } from "./components/create-mobile-emission-form";
 import { Layout } from "./components/layout";
-import { useRouter } from "next/navigation";
-import { usePagination } from "~/hooks/usePagination";
+import { TablePagination } from "./components/table-pagination";
 
 export default function Page() {
   const [createDialog, setCreateDialog] = useState(false);
-  const {skip, take} = usePagination()
+  const { skip, take } = usePagination();
 
   const { data: emissions, isLoading } = useGetEmissions({
     skip,
-    take
+    take,
   });
 
-  const noMobileEmissions = !emissions?.length;
+  const noMobileEmissions = !emissions?.total;
 
   const spinner = <BarLoader color="#4fd1c5" />;
   const content = noMobileEmissions ? <NoItems /> : <EmissionList />;
@@ -65,13 +66,18 @@ export default function Page() {
 }
 
 function BottomBar() {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <div className="h-full w-full flex items-center justify-end px-10">
-      <Button onClick={() => {
-        router.push("/results")
-      }}><Send /> Concluir</Button>
+      <Button
+        onClick={() => {
+          router.push("/results");
+        }}
+        // size={""}
+      >
+        <Send/> Concluir
+      </Button>
     </div>
   );
 }
@@ -110,7 +116,7 @@ const ModalTypeMap: Record<string, string> = {
 };
 
 function EmissionList() {
-  const cachedData = useQueryClient().getQueryData<MobileEmissionWithCO2[]>([
+  const cachedData = useQueryClient().getQueryData<MobileEmissionsReponse>([
     "get-emissions",
   ]);
 
@@ -156,7 +162,7 @@ function EmissionList() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {cachedData?.map((data) => (
+          {cachedData?.data.map((data) => (
             <TableRow key={data.id}>
               <TableCell>{data.source}</TableCell>
               <TableCell>{data.fuel_type}</TableCell>
@@ -175,6 +181,7 @@ function EmissionList() {
           ))}
         </TableBody>
       </Table>
+      <TablePagination totalItems={cachedData?.total ?? 0} />
       <div className="p-4 flex gap-2 bg-zinc-100 w-full">
         <Form {...form}>
           <form onSubmit={onSubmit} className="p-4 flex gap-2 items-end w-full">

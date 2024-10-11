@@ -76,11 +76,8 @@ const chartConfig = {
 
 function BarChartInfo() {
   const data = useQueryClient().getQueryData<Result>(["get-results"]);
-  // eslint-disable-next-line no-unused-vars
-  const { co2e: _, ...rest } = data ? data : {};
-
   const chartData = data
-    ? Object.keys(rest).map((key) => {
+    ? Object.keys(data).map((key) => {
         return {
           name: key,
           // @ts-ignore

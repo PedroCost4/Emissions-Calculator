@@ -1,27 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
-import type { MobileEmissionWithCO2, Pagination } from "~/schema/mobileEmissionSchema";
+import type {
+  MobileEmissionsReponse,
+  Pagination,
+} from "~/schema/mobileEmissionSchema";
 
-type UseGetEmissionProps = Pagination
+type UseGetEmissionProps = Pagination;
 
-export function useGetEmissions({skip, take}: UseGetEmissionProps) {
+export function useGetEmissions({ skip, take }: UseGetEmissionProps) {
   return useQuery({
     queryKey: ["get-emissions"],
     queryFn: async () => {
-      const res = await fetch(`${process.env.API_URL}/mobile-emission/many`, {
+      const params = new URLSearchParams({
+        skip: skip.toString(),
+        take: take.toString(),
+      }).toString();
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/mobile-emission/many?${params}`;
+
+      const res = await fetch(url, {
         method: "get",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          skip,
-          take
-        })
       });
 
       if (res.ok) {
         const data = await res.json();
 
-        return data as MobileEmissionWithCO2[];
+        return data as MobileEmissionsReponse;
       }
 
       return null;

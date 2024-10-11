@@ -66,7 +66,6 @@ export function PaginationNavigation({
     <div className="flex gap-2 max-md:justify-between">
       <Button
         variant="outline"
-        size="sm"
         disabled={!hasPrevious}
         onClick={() => {
           onPageChange(page - 1);
@@ -93,7 +92,6 @@ export function PaginationNavigation({
         </SelectContent>
       </Select>
       <Button
-        size="sm"
         variant="outline"
         disabled={!hasNext}
         onClick={() => {

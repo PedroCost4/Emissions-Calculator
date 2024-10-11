@@ -1,11 +1,11 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { Logo } from "./logo";
-import { AlertCircle, CheckCircle2, ChevronUp, Cloud, X } from "lucide-react";
 import { Button } from "@repo/ui/components/ui/button";
-import toast, { resolveValue, Toaster } from "react-hot-toast";
 import { cn } from "@repo/ui/lib/utils";
+import { AlertCircle, CheckCircle2, ChevronUp, Cloud, X } from "lucide-react";
+import type { ReactNode } from "react";
+import toast, { resolveValue, Toaster } from "react-hot-toast";
+import { Logo } from "./logo";
 
 type LayoutProps = {
   children: ReactNode;
@@ -15,7 +15,13 @@ type LayoutProps = {
   removeBottomBar?: boolean;
 };
 
-export function Layout({ children, bottomBar, topBar, removeBottomBar = false, removeTopBar = false }: LayoutProps) {
+export function Layout({
+  children,
+  bottomBar,
+  topBar,
+  removeBottomBar = false,
+  removeTopBar = false,
+}: LayoutProps) {
   return (
     <div className="flex flex-col w-full h-full">
       <Toaster
@@ -74,7 +80,7 @@ export function Layout({ children, bottomBar, topBar, removeBottomBar = false, r
         </div>
       </div>
       <div className="h-full w-full flex flex-col">
-        {!removeTopBar && <div className="h-11">{topBar}</div>}
+        {!removeTopBar && <div className="h-11 w-full">{topBar}</div>}
         {children}
         {!removeBottomBar && <div className="h-[80px]">{bottomBar}</div>}
       </div>

@@ -5,7 +5,8 @@ export function useGetResults() {
   return useQuery({
     queryKey: ["get-results"],
     queryFn: async () => {
-      const res = await fetch(`${process.env.API_URL}/mobile-emission/results`)
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/mobile-emission/results`
+      const res = await fetch(url)
 
       if (res.ok) {
         const data = await res.json();

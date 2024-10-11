@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
 import { cn } from "@repo/ui/lib/utils";
 import { Providers } from "./components/layout/providers";
+import { Suspense } from "react";
 const archivo = Archivo({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,9 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(archivo.className, "h-screen w-screen")}>
-        <Providers>
-         {children}
-        </Providers>
+        <Suspense>
+          <Providers>{children}</Providers>
+        </Suspense>
       </body>
     </html>
   );

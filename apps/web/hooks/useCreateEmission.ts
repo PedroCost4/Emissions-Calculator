@@ -5,7 +5,8 @@ export function useCreateEmission() {
   return useMutation({
     mutationKey: ["create-emission"],
     mutationFn: async (data: MobileEmissionCreateSchema) => {
-      return await fetch(`${process.env.API_URL}/mobile-emission`, {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/mobile-emission`;
+      return await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

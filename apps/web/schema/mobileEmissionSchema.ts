@@ -11,6 +11,11 @@ export const mobileEmissionSchema = z.object({
 
 export type MobileEmission = z.infer<typeof mobileEmissionSchema>
 
+export type MobileEmissionsReponse = {
+  data: MobileEmissionWithCO2[],
+  total: number
+}
+
 export type MobileEmissionWithCO2 = MobileEmission & { co2e: number }
 
 export const mobileEmissionCreateSchema = mobileEmissionSchema.omit({
@@ -20,29 +25,6 @@ export const mobileEmissionCreateSchema = mobileEmissionSchema.omit({
 })
 
 export type MobileEmissionCreateSchema = z.infer<typeof mobileEmissionCreateSchema>
-
-export const FuelTypeSheetSchema = z.object({
-  fuel: z.string(),
-  fuel_type: z.enum(["Fóssil", "Biocombustível"]),
-  subdivision: z.number(),
-  unit: z.string(),
-  "PCI(kcal/kg)": z.number(),
-  density: z.number(),
-  reference: z.string(),
-  fe_CO2: z.number(),
-  fe_CH4: z.number(),
-  fe_N2O: z.number(),
-})
-
-export type FuelTypeSheet = z.infer<typeof FuelTypeSheetSchema>
-
-export const GWPSchema = z.object({
-  "Gás": z.string(),
-  GWP: z.number(),
-  "referência": z.string(),
-})
-
-export type GWP = z.infer<typeof GWPSchema>
 
 export const ResultSchema = z.object({
   co2: z.number(),

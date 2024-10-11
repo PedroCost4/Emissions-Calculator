@@ -74,7 +74,7 @@ export function CreateMobileEmissionForm() {
           <FormItem className="flex flex-col gap-2 w-full">
             <FormLabel>Modal</FormLabel>
             <FormControl>
-            <Select onValueChange={field.onChange}> 
+            <Select value={field.value} onValueChange={field.onChange}> 
                 <SelectTrigger {...field}>
                   <SelectValue placeholder="Selecione aqui" />
                 </SelectTrigger>

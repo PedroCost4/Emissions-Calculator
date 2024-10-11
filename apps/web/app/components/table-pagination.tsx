@@ -1,8 +1,8 @@
-import { usePagination } from "~/hooks/usePagination";
 import {
   PaginationNavigation,
   PaginationSize,
 } from "@repo/ui/components/ui/pagination";
+import { usePagination } from "~/hooks/usePagination";
 
 interface ListPaginationProps {
   totalItems: number;
