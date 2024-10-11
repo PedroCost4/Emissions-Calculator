@@ -18,8 +18,8 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body className={cn(archivo.className, "h-screen w-screen")}>
-        <Suspense>
+      <body className={cn(archivo.className, "h-screen max-w-screen")}>
+        <Suspense fallback={<div>Loading...</div>}>
           <Providers>{children}</Providers>
         </Suspense>
       </body>

@@ -14,3 +14,7 @@ export const mobileEmissionCreateSchema = mobileEmissionSchema.omit({
 }).extend({
   quantity_unit: z.string()
 })
+
+export const deleteEmissionSchema = mobileEmissionSchema.pick({
+  id: true
+})

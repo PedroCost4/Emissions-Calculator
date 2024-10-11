@@ -20,7 +20,7 @@ export default function Page() {
   const { data, isLoading } = useGetResults();
   return (
     <Layout removeBottomBar topBar={<TopBar />}>
-      <div className="bg-accent flex w-full justify-between p-4 ">
+      <div className="bg-secondary flex w-full justify-between p-4 ">
         <div className="flex flex-col w-full">
           <span className="font-bold text-2xl">Resultados</span>
           <span>Ano de referência: {new Date().getFullYear()}</span>

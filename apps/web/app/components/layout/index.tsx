@@ -13,6 +13,7 @@ type LayoutProps = {
   bottomBar?: ReactNode;
   removeTopBar?: boolean;
   removeBottomBar?: boolean;
+  className?: string;
 };
 
 export function Layout({
@@ -21,6 +22,7 @@ export function Layout({
   topBar,
   removeBottomBar = false,
   removeTopBar = false,
+  className,
 }: LayoutProps) {
   return (
     <div className="flex flex-col w-full h-full">
@@ -60,7 +62,7 @@ export function Layout({
             {resolveValue(t.message, t)}
             <Button
               onClick={() => toast.dismiss(t.id)}
-              variant="default"
+              variant="icon"
               size="icon"
               className="text-inherit"
             >
@@ -69,7 +71,7 @@ export function Layout({
           </div>
         )}
       </Toaster>
-      <div className="flex w-full h-fit py-4 px-10 justify-between items-center bg-foreground gap-20">
+      <div className="flex w-full h-fit py-4 px-10 justify-between items-center bg-foreground gap-20 z-50 top-0 left-0 sticky">
         <Logo />
         <div className="flex gap-2 text-accent-foreground items-center mr-auto">
           <Cloud size={24} />
@@ -79,10 +81,12 @@ export function Layout({
           <ChevronUp size={24} />
         </div>
       </div>
-      <div className="h-full w-full flex flex-col">
-        {!removeTopBar && <div className="h-11 w-full">{topBar}</div>}
-        {children}
-        {!removeBottomBar && <div className="h-[80px]">{bottomBar}</div>}
+      <div className="h-full w-full flex flex-col relative">
+        {!removeTopBar && <div className="min-h-11 w-full">{topBar}</div>}
+        <div className={className}>
+          {children}
+        </div>
+        {!removeBottomBar && <div className="min-h-[80px] ">{bottomBar}</div>}
       </div>
     </div>
   );

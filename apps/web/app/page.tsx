@@ -13,7 +13,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { Send, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { BarLoader } from "react-spinners";
@@ -22,7 +22,7 @@ import { useGetEmissions } from "~/hooks/useGetEmissions";
 import { usePagination } from "~/hooks/usePagination";
 import type {
   MobileEmissionCreateSchema,
-  MobileEmissionsReponse
+  MobileEmissionsReponse,
 } from "~/schema/mobileEmissionSchema";
 import {
   CREATE_MOBILE_EMISSION_DEFAULT_VALUE,
@@ -31,6 +31,15 @@ import {
 import { CreateMobileEmissionForm } from "./components/create-mobile-emission-form";
 import { Layout } from "./components/layout";
 import { TablePagination } from "./components/table-pagination";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@repo/ui/components/ui/dialog";
+import { useDeleteEmission } from "~/hooks/useDeleteEmission";
 
 export default function Page() {
   const [createDialog, setCreateDialog] = useState(false);
@@ -47,21 +56,24 @@ export default function Page() {
   const content = noMobileEmissions ? <NoItems /> : <EmissionList />;
 
   return (
-    <Layout bottomBar={noMobileEmissions ? undefined : <BottomBar />}>
-      <main className="flex flex-col justify-center items-center w-full h-full border-y px-8 py-4 relative">
-        <div className="flex flex-col w-full absolute top-0 left-0 pl-8 pt-4">
+    <main className="h-full w-full">
+      <Layout
+        bottomBar={noMobileEmissions ? undefined : <BottomBar />}
+        className="flex flex-col justify-center items-center w-full h-full border-y px-8 py-4"
+      >
+        <div className="flex flex-col w-full">
           <span>Ano de referência: {new Date().getFullYear()}</span>
           <span className="font-bold text-2xl">Combustão móvel</span>
         </div>
-        <div className="flex flex-col justify-center items-center w-full">
+        <div className="flex flex-col justify-center items-center w-full h-full">
           {isLoading ? spinner : content}
         </div>
         <CreateMobileEmissionDialog
           open={createDialog}
           onOpenChange={setCreateDialog}
         />
-      </main>
-    </Layout>
+      </Layout>
+    </main>
   );
 }
 
@@ -69,14 +81,14 @@ function BottomBar() {
   const router = useRouter();
 
   return (
-    <div className="h-full w-full flex items-center justify-end px-10">
+    <div className="h-full w-full flex items-center justify-end px-4 pt-4">
       <Button
         onClick={() => {
           router.push("/results");
         }}
-        // size={""}
+        size="xl"
       >
-        <Send/> Concluir
+        <Send /> Concluir
       </Button>
     </div>
   );
@@ -86,7 +98,7 @@ function NoItems() {
   const [createDialog, setCreateDialog] = useState(false);
 
   return (
-    <div className="flex flex-col gap-2 items-center">
+    <div className="flex flex-col gap-2 items-center h-full w-full justify-center">
       <CreateMobileEmissionDialog
         open={createDialog}
         onOpenChange={setCreateDialog}
@@ -116,6 +128,9 @@ const ModalTypeMap: Record<string, string> = {
 };
 
 function EmissionList() {
+  const [selectedId, setSelectedId] = useState("");
+  const [deleteDialog, setDeleteDialog] = useState(false);
+
   const cachedData = useQueryClient().getQueryData<MobileEmissionsReponse>([
     "get-emissions",
   ]);
@@ -149,8 +164,13 @@ function EmissionList() {
   );
 
   return (
-    <div className="flex flex-col w-full gap-4">
-      <Table className="w-full">
+    <div className="flex flex-col w-full gap-4 p-5 relative">
+      <DeleteEmissionDialog
+        open={deleteDialog}
+        onOpenChange={setDeleteDialog}
+        selectedId={selectedId}
+      />
+      <Table className="w-full h-full">
         <TableHeader className="w-full">
           <TableRow>
             <TableHead>Fonte</TableHead>
@@ -172,7 +192,14 @@ function EmissionList() {
                 <span className="capitalize">{data.quantity_unit}</span>
               </TableCell>
               <TableCell>
-                <Button size="icon" variant="icon">
+                <Button
+                  size="icon"
+                  variant="icon"
+                  onClick={() => {
+                    setSelectedId(data.id);
+                    setDeleteDialog(true);
+                  }}
+                >
                   <Trash size={20} />
                 </Button>
               </TableCell>
@@ -193,5 +220,56 @@ function EmissionList() {
         </Form>
       </div>
     </div>
+  );
+}
+
+type DeleteEmissionDialogProps = {
+  open: boolean;
+  onOpenChange: Dispatch<SetStateAction<boolean>>;
+  selectedId: string;
+};
+
+function DeleteEmissionDialog({
+  onOpenChange,
+  open,
+  selectedId,
+}: DeleteEmissionDialogProps) {
+  const { mutateAsync: deleteEmission, isPending } = useDeleteEmission();
+  const queryClient = useQueryClient();
+
+  const onSubmit = async () => {
+    await deleteEmission(selectedId);
+    await queryClient.invalidateQueries({
+      queryKey: ["get-emissions"],
+    });
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Excluir emissão</DialogTitle>
+        </DialogHeader>
+        <div className="w-full flex items-center justify-center">
+          Você tem certeza que deseja excluir esta fonte de emissão?
+        </div>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button className="w-full" variant="outline">
+              Cancelar
+            </Button>
+          </DialogClose>
+          <Button
+            loading={isPending}
+            className="w-full"
+            variant="default"
+            onClick={onSubmit}
+          >
+            Excluir
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -95,7 +95,7 @@ export function CreateMobileEmissionForm() {
         name="quantity"
         rules={{
           min: {
-            value: 0,
+            value: 1,
             message: "A quantidade tem valor mínimo de 0",
           },
           required: "Esse campo é obrigatório"
